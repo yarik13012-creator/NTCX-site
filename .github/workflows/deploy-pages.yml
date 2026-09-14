@@ -1,0 +1,58 @@
+name: Deploy NTCX site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - 'assets/**'
+      - '.nojekyll'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out website source
+        uses: actions/checkout@v4
+
+      - name: Verify and package website
+        shell: bash
+        run: |
+          for file in index.html styles.css script.js assets/ntcx-logo.png assets/nova-hero.png assets/nova-colors.png; do
+            if [ ! -s "$file" ]; then
+              echo "::error file=$file::Required website file is missing or empty. Import the complete website before deploying."
+              exit 1
+            fi
+          done
+          mkdir -p _site
+          cp index.html styles.css script.js _site/
+          cp -R assets _site/assets
+          touch _site/.nojekyll
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publish website
+        id: deployment
+        uses: actions/deploy-pages@v5
