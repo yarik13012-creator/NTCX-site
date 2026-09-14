@@ -34,14 +34,14 @@ jobs:
       - name: Verify and package website
         shell: bash
         run: |
-          for file in index.html styles.css script.js assets/ntcx-logo.png assets/nova-hero.png assets/nova-colors.png; do
+          for file in index.html styles.css overrides.css script.js assets/hero-data-1.js assets/hero-data-2.js assets/hero-data-3.js assets/hero-data-4.js; do
             if [ ! -s "$file" ]; then
-              echo "::error file=$file::Required website file is missing or empty. Import the complete website before deploying."
+              echo "::error file=$file::Required website file is missing or empty."
               exit 1
             fi
           done
           mkdir -p _site
-          cp index.html styles.css script.js _site/
+          cp index.html styles.css overrides.css script.js _site/
           cp -R assets _site/assets
           touch _site/.nojekyll
 
