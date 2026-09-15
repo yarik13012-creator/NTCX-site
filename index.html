@@ -10,6 +10,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Keep the NOVA render visually separate from the headline on desktop. */
+    @media (min-width:1161px){
+      .hero-art{right:-10px;top:92px;width:min(54vw,850px);height:600px}
+      .hero-art img{width:76%;transform:translateX(72px)}
+      .signal-orbits{inset:8% 1% 2% 15%}
+      @keyframes floatCase{0%,100%{transform:translateX(72px) translateY(0)}50%{transform:translateX(72px) translateY(-10px)}}
+    }
+    @media (min-width:761px) and (max-width:1160px){
+      .hero-art{right:-110px;width:min(61vw,780px)}
+      .hero-art img{width:76%}
+      @keyframes floatCase{0%,100%{transform:translateX(48px) translateY(0)}50%{transform:translateX(48px) translateY(-10px)}}
+    }
+  </style>
 </head>
 <body>
   <header class="hero" id="top">
